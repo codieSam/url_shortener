@@ -3,6 +3,7 @@ package services
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"sync"
 )
 
@@ -20,6 +21,7 @@ func newURLService() *urlService {
 func (s *urlService) Create(originalURL string) (string, error) {
 	for {
 		randomBytes := make([]byte, 6)
+		fmt.Println(randomBytes)
 
 		if _, err := rand.Read(randomBytes); err != nil {
 			return "", err
@@ -35,6 +37,8 @@ func (s *urlService) Create(originalURL string) (string, error) {
 		s.mu.Unlock()
 	}
 }
+
+// resolve function
 
 func (s *urlService) Resolve(code string) (string, bool) {
 	s.mu.RLock()
