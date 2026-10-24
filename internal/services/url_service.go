@@ -3,25 +3,23 @@ package services
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
 	"sync"
 )
 
-type urlService struct {
+type URLService struct {
 	mu   sync.RWMutex
 	urls map[string]string
 }
 
-func newURLService() *urlService {
-	return &urlService{
+func NewURLService() *URLService {
+	return &URLService{
 		urls: make(map[string]string),
 	}
 }
 
-func (s *urlService) Create(originalURL string) (string, error) {
+func (s *URLService) Create(originalURL string) (string, error) {
 	for {
 		randomBytes := make([]byte, 6)
-		fmt.Println(randomBytes)
 
 		if _, err := rand.Read(randomBytes); err != nil {
 			return "", err
@@ -40,7 +38,7 @@ func (s *urlService) Create(originalURL string) (string, error) {
 
 // resolve function
 
-func (s *urlService) Resolve(code string) (string, bool) {
+func (s *URLService) Resolve(code string) (string, bool) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
