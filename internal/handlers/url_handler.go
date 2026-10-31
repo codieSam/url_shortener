@@ -61,3 +61,17 @@ func (h *URLHandler) CreateURL(c *gin.Context) {
 		"original_url": originalURL,
 	})
 }
+
+func (h *URLHandler) RedirectURL(c *gin.Context) {
+	code := c.Param("code")
+
+	originalURL, exists := h.service.Resolve(code)
+
+	if !exists {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Short URL not found",
+		})
+		return
+	}
+	c.Redirect(http.StatusFound, originalURL)
+}

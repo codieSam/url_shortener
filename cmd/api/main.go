@@ -16,6 +16,7 @@ func main() {
 	urlHandler := handlers.NewURLHandler(urlService)
 
 	router.POST("/api/v1/urls", urlHandler.CreateURL)
+	router.GET("./:code", urlHandler.RedirectURL)
 
 	router.GET("/healthz", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
